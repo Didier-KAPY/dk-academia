@@ -43,12 +43,15 @@
     @if (session('status'))
         <div class="flash flash-success" role="status">{{ session('status') }}</div>
     @endif
+    @if (session('error'))
+        <div class="flash flash-error" role="alert">{{ session('error') }}</div>
+    @endif
 
     @php
         $sidebarUser = auth()->user();
         $hasSidebar = $sidebarUser && collect([
             'pedagogy.manage', 'trainings.manage', 'users.view', 'users.manage',
-            'roles.manage', 'finance.view', 'settings.manage', 'learning.access',
+            'roles.manage', 'finance.view', 'settings.manage', 'backups.manage', 'learning.access',
         ])->contains(fn (string $permission): bool => $sidebarUser->hasPermissionTo($permission));
     @endphp
 
@@ -57,7 +60,7 @@
             <aside class="app-sidebar" aria-label="Menu de l’espace personnel">
                 <a class="sidebar-home {{ request()->routeIs('dashboard', 'dashboard.roles.show') ? 'is-active' : '' }}" href="{{ route('dashboard') }}">Mon espace</a>
 
-                @if ($sidebarUser->hasPermissionTo('pedagogy.manage') || $sidebarUser->hasPermissionTo('trainings.manage') || $sidebarUser->hasPermissionTo('users.view') || $sidebarUser->hasPermissionTo('users.manage') || $sidebarUser->hasPermissionTo('roles.manage') || $sidebarUser->hasPermissionTo('finance.view') || $sidebarUser->hasPermissionTo('settings.manage'))
+                @if ($sidebarUser->hasPermissionTo('pedagogy.manage') || $sidebarUser->hasPermissionTo('trainings.manage') || $sidebarUser->hasPermissionTo('users.view') || $sidebarUser->hasPermissionTo('users.manage') || $sidebarUser->hasPermissionTo('roles.manage') || $sidebarUser->hasPermissionTo('finance.view') || $sidebarUser->hasPermissionTo('settings.manage') || $sidebarUser->hasPermissionTo('backups.manage'))
                     <span class="sidebar-heading">Administration</span>
                     <nav class="sidebar-nav" aria-label="Administration">
                         @if ($sidebarUser->hasPermissionTo('pedagogy.manage'))<a class="{{ request()->routeIs('management.pedagogy.*') ? 'is-active' : '' }}" href="{{ route('management.pedagogy.index') }}">Gestion pédagogique</a>@endif
@@ -66,6 +69,7 @@
                         @if ($sidebarUser->hasPermissionTo('roles.manage'))<a class="{{ request()->routeIs('management.roles.*') ? 'is-active' : '' }}" href="{{ route('management.roles.index') }}">Rôles et permissions</a>@endif
                         @if ($sidebarUser->hasPermissionTo('finance.view'))<a class="{{ request()->routeIs('management.reports.*') ? 'is-active' : '' }}" href="{{ route('management.reports.index') }}">Rapports</a>@endif
                         @if ($sidebarUser->hasPermissionTo('settings.manage'))<a class="{{ request()->routeIs('management.settings.*') ? 'is-active' : '' }}" href="{{ route('management.settings.index') }}">Paramètres généraux</a>@endif
+                        @if ($sidebarUser->hasPermissionTo('backups.manage'))<a class="{{ request()->routeIs('management.backups.*') ? 'is-active' : '' }}" href="{{ route('management.backups.index') }}">Sauvegardes</a>@endif
                     </nav>
                 @endif
 

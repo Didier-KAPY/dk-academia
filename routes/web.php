@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LearningController;
+use App\Http\Controllers\Management\BackupController;
 use App\Http\Controllers\Management\EvaluationController;
 use App\Http\Controllers\Management\PedagogyController;
 use App\Http\Controllers\Management\ReportController;
@@ -63,6 +64,12 @@ Route::middleware('auth')->group(function (): void {
         Route::middleware('permission:settings.manage')->group(function (): void {
             Route::get('/parametres', [SettingsController::class, 'index'])->name('settings.index');
             Route::put('/parametres', [SettingsController::class, 'update'])->name('settings.update');
+        });
+        Route::middleware('permission:backups.manage')->group(function (): void {
+            Route::get('/sauvegardes', [BackupController::class, 'index'])->name('backups.index');
+            Route::post('/sauvegardes', [BackupController::class, 'store'])->middleware('throttle:3,10')->name('backups.store');
+            Route::get('/sauvegardes/{backup}/base', [BackupController::class, 'downloadDatabase'])->name('backups.database.download');
+            Route::get('/sauvegardes/{backup}/documents', [BackupController::class, 'downloadDocuments'])->name('backups.documents.download');
         });
         Route::middleware('permission:users.view')->get('/utilisateurs', [UserManagementController::class, 'index'])
             ->name('users.index');

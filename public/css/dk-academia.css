@@ -260,6 +260,24 @@ h1, h2, h3 { font-family: Manrope, "Segoe UI", sans-serif; }
 .site-footer { gap: 22px; }
 .footer-contact { display: flex; flex-wrap: wrap; gap: 12px; }
 .footer-contact a:hover { color: var(--blue); }
+.flash-error { border: 1px solid #f2c5c2; background: #fff1f0; color: #9d2921; }
+.backup-create-panel { align-items: center; gap: 24px; }
+.backup-create-panel > div { max-width: 640px; }
+.backup-create-panel p { margin: 7px 0 0; color: #6e7d91; font-size: 13px; line-height: 1.65; }
+.backup-list { display: grid; gap: 12px; }
+.backup-card { display: grid; gap: 15px; padding: 20px; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
+.backup-card-heading, .backup-files { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+.backup-card-heading > div, .backup-files > div { display: grid; gap: 6px; }
+.backup-card-heading strong { color: var(--navy); font: 700 14px Manrope, sans-serif; }
+.backup-card-heading > div > span, .backup-files > div > span, .backup-verified-at { color: var(--muted); font-size: 11px; }
+.backup-files { justify-content: flex-start; flex-wrap: wrap; }
+.backup-files > div { min-width: 210px; padding: 12px; border-radius: 8px; background: #f7f9fc; }
+.backup-status-verified { color: #17633a; background: #e8f7ee; }
+.backup-status-failed { color: #9d2921; background: #fff1f0; }
+
+@media (max-width: 600px) {
+    .backup-create-panel, .backup-card-heading { align-items: flex-start; flex-direction: column; }
+}
 
 .topbar { gap: 22px; }
 .site-nav { justify-content: center; gap: clamp(9px, 1.2vw, 18px); }
