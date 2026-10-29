@@ -1,0 +1,7 @@
+@extends('layouts.app')
+@section('title', 'Mes inscriptions')
+@section('content')
+    <section class="listing-page"><div class="page-heading"><span class="eyebrow">MON PARCOURS</span><h1>Mes inscriptions</h1><p>Retrouvez ici les demandes d’inscription et leur statut.</p></div>
+        <div class="enrollment-list">@forelse ($enrollments as $enrollment)<article class="enrollment-card"><div><span class="status-pill">@switch($enrollment->status)@case('pending')En attente@break @case('confirmed')Confirmée@break @case('in_progress')En cours@break @case('completed')Terminée@break @case('cancelled')Annulée@break @default{{ $enrollment->status }}@endswitch</span><h2><a href="{{ route('trainings.show', $enrollment->training) }}">{{ $enrollment->training->title }}</a></h2><p>{{ $enrollment->deliveryMode?->name ?? 'Modalité à confirmer' }}@if ($enrollment->session) · {{ $enrollment->session->name }}@endif</p><span class="muted">Demande du {{ $enrollment->registered_at?->format('d/m/Y') }}</span></div><strong>{{ $enrollment->agreed_amount !== null ? number_format((float) $enrollment->agreed_amount, 2, ',', ' ').' '.$enrollment->currency : 'Tarif à confirmer' }}</strong></article>@empty<div class="empty-state"><h2>Vous n’avez pas encore d’inscription.</h2><p>Parcourez le catalogue pour choisir votre prochaine formation.</p><a href="{{ route('trainings.index') }}">Consulter les formations</a></div>@endforelse</div>{{ $enrollments->links() }}
+    </section>
+@endsection
