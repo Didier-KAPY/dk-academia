@@ -50,6 +50,7 @@ class DatabaseStructureTest extends TestCase
             'notifications',
             'app_settings',
             'backup_runs',
+            'site_pages',
         ];
 
         $this->assertTrue(collect($tables)->every(fn (string $table): bool => Schema::hasTable($table)));
@@ -61,9 +62,9 @@ class DatabaseStructureTest extends TestCase
         $this->seed();
 
         $this->assertSame(9, Role::count());
-        $this->assertSame(11, Permission::count());
+        $this->assertSame(12, Permission::count());
         $this->assertSame(3, DeliveryMode::count());
-        $this->assertSame(11, Role::where('slug', 'administrateur')->firstOrFail()->permissions()->count());
+        $this->assertSame(12, Role::where('slug', 'administrateur')->firstOrFail()->permissions()->count());
     }
 
     public function test_training_modes_sessions_and_enrollments_follow_their_relations(): void

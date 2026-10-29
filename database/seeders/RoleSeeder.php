@@ -19,6 +19,7 @@ class RoleSeeder extends Seeder
             'roles.manage' => ['Gérer les rôles', 'Attribuer les rôles et permissions.'],
             'settings.manage' => ['Gérer les paramètres généraux', 'Modifier l’identité et les coordonnées de l’organisation.'],
             'backups.manage' => ['Gérer les sauvegardes', 'Créer et télécharger les sauvegardes vérifiées.'],
+            'site-content.manage' => ['Gérer les contenus du site', 'Modifier les actualités et les pages de présentation publiques.'],
             'trainings.manage' => ['Gérer les formations', 'Créer, modifier et publier les formations.'],
             'pedagogy.manage' => ['Gérer la pédagogie', 'Organiser les sessions, présences et évaluations.'],
             'finance.view' => ['Consulter les finances', 'Consulter les informations financières autorisées.'],

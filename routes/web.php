@@ -10,19 +10,21 @@ use App\Http\Controllers\Management\EvaluationController;
 use App\Http\Controllers\Management\PedagogyController;
 use App\Http\Controllers\Management\ReportController;
 use App\Http\Controllers\Management\SettingsController;
+use App\Http\Controllers\Management\SiteContentController;
 use App\Http\Controllers\Management\UserManagementController;
 use App\Http\Controllers\Public\ContactController;
 use App\Http\Controllers\Public\EnrollmentController;
 use App\Http\Controllers\Public\MyEnrollmentsController;
 use App\Http\Controllers\Public\NewsController;
 use App\Http\Controllers\Public\ServiceController;
+use App\Http\Controllers\Public\SitePageController;
 use App\Http\Controllers\Public\TrainerController;
 use App\Http\Controllers\Public\TrainingController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'public.home')->name('home');
-Route::view('/a-propos', 'public.about')->name('about');
-Route::view('/mission', 'public.mission')->name('mission');
+Route::get('/a-propos', [SitePageController::class, 'about'])->name('about');
+Route::get('/mission', [SitePageController::class, 'mission'])->name('mission');
 
 Route::get('/formations', [TrainingController::class, 'index'])->name('trainings.index');
 Route::get('/formations/{training:slug}', [TrainingController::class, 'show'])->name('trainings.show');
@@ -70,6 +72,18 @@ Route::middleware('auth')->group(function (): void {
             Route::post('/sauvegardes', [BackupController::class, 'store'])->middleware('throttle:3,10')->name('backups.store');
             Route::get('/sauvegardes/{backup}/base', [BackupController::class, 'downloadDatabase'])->name('backups.database.download');
             Route::get('/sauvegardes/{backup}/documents', [BackupController::class, 'downloadDocuments'])->name('backups.documents.download');
+        });
+        Route::middleware('permission:site-content.manage')->prefix('contenus')->name('content.')->group(function (): void {
+            Route::get('/', [SiteContentController::class, 'pages'])->name('pages.index');
+            Route::get('/pages/{pageSlug}', [SiteContentController::class, 'editPage'])->name('pages.edit');
+            Route::put('/pages/{pageSlug}', [SiteContentController::class, 'updatePage'])->name('pages.update');
+            Route::get('/actualites', [SiteContentController::class, 'newsIndex'])->name('news.index');
+            Route::get('/actualites/creer', [SiteContentController::class, 'createNews'])->name('news.create');
+            Route::post('/actualites', [SiteContentController::class, 'storeNews'])->name('news.store');
+            Route::get('/actualites/{newsPost}/modifier', [SiteContentController::class, 'editNews'])->name('news.edit');
+            Route::put('/actualites/{newsPost}', [SiteContentController::class, 'updateNews'])->name('news.update');
+            Route::patch('/actualites/{newsPost}/publication', [SiteContentController::class, 'toggleNewsPublication'])->name('news.publication');
+            Route::delete('/actualites/{newsPost}', [SiteContentController::class, 'destroyNews'])->name('news.destroy');
         });
         Route::middleware('permission:users.view')->get('/utilisateurs', [UserManagementController::class, 'index'])
             ->name('users.index');
