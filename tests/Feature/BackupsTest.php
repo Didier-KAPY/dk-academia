@@ -130,6 +130,20 @@ class BackupsTest extends TestCase
         ]);
     }
 
+    public function test_console_command_returns_failure_and_keeps_history_when_driver_is_unsupported(): void
+    {
+        Storage::fake('local');
+
+        $this->artisan('backups:create')
+            ->expectsOutput('La sauvegarde a échoué. Vérifiez la configuration MySQL et les outils système.')
+            ->assertExitCode(1);
+
+        $this->assertDatabaseHas('backup_runs', [
+            'status' => BackupRun::STATUS_FAILED,
+            'created_by' => null,
+        ]);
+    }
+
     private function userWithBackupPermission(): User
     {
         $user = User::factory()->create();
